@@ -1,4 +1,5 @@
 import { useRef, useState } from 'react';
+import { evaluate } from 'mathjs';
 import './App.css';
 
 function App() {
@@ -30,11 +31,12 @@ function App() {
     adjustFontSize();
   };
 
+
   const evaluateResult = () => {
     try {
       setResult((prevResult) => {
         const sanitizedExpression = prevResult.replace(/[^\d+\-*/.]/g, ''); // Sanitize expression
-        const result = new Function(`return (${sanitizedExpression})`)(); // Use Function constructor
+        const result = evaluate(sanitizedExpression); // Use math.js to evaluate expression
         const newResult = isNaN(result) ? 'Error404' : result.toString(); // Handle NaN result
         adjustFontSize();
         return newResult;
@@ -43,7 +45,6 @@ function App() {
       setResult('Error404');
     }
   };
-  
   
 
   return (
