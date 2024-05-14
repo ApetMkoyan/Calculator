@@ -33,7 +33,9 @@ function App() {
   const evaluateResult = () => {
     try {
       setResult((prevResult) => {
-        const newResult = String(eval(prevResult));
+        const sanitizedExpression = prevResult.replace(/[^\d+\-*/.]/g, ''); // Sanitize expression
+        const result = new Function(`return (${sanitizedExpression})`)(); // Use Function constructor
+        const newResult = isNaN(result) ? 'Error404' : result.toString(); // Handle NaN result
         adjustFontSize();
         return newResult;
       });
@@ -41,6 +43,7 @@ function App() {
       setResult('Error404');
     }
   };
+  
   
 
   return (
