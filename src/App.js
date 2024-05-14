@@ -32,12 +32,16 @@ function App() {
 
   const evaluateResult = () => {
     try {
-      setResult(eval(result).toString());
-      adjustFontSize();
+      setResult((prevResult) => {
+        const newResult = String(eval(prevResult));
+        adjustFontSize();
+        return newResult;
+      });
     } catch {
       setResult('Error404');
     }
   };
+  
 
   return (
     <div className="App">
